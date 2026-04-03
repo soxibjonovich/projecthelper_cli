@@ -1,0 +1,24 @@
+from fastapi import FastAPI
+from routers.v1 import register_routers
+
+app = FastAPI(
+    title="{{ spec.project_title }}",
+    description="{{ spec.project_description }}",
+    version="{{ spec.project_version }}",
+    contact={
+        "name": "API Support",
+        "url": "http://example.com/contact",
+        "email": "support@example.com",
+    },
+    license_info={
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
+    },
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
+register_routers(app)
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}, 200

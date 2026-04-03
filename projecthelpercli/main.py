@@ -1,8 +1,10 @@
-from typing import Literal
-from projecthelpercli.spec import ProjectSpec
-from projecthelpercli.services import filesystem, renderer, template_loader
+from typing import Annotated, Literal
+
 import typer
 from rich.console import Console
+
+from projecthelpercli.services import filesystem, renderer, template_loader
+from projecthelpercli.spec import ProjectSpec
 
 app = typer.Typer()
 console = Console()
@@ -11,10 +13,21 @@ err_console = Console(stderr=True)
 
 @app.command()
 def init(
-    project_type: Literal["bot", "api"],
-    project_title: str,
+    project_type: Annotated[Literal["bot", "api"], typer.Argument(help="Project type")],
+    project_title: Annotated[str, typer.Argument(help="Project title")],
+    project_description: Annotated[
+        str | None, typer.Option("--description", "-d", help="Project description")
+    ] = None,
+    project_version: Annotated[
+        str, typer.Option("--version", "-v", help="Project version", min=1)
+    ] = "1.0.0",
 ):
-    spec = ProjectSpec(project_title=project_title, project_type=project_type)
+    spec = ProjectSpec(
+        project_title=project_title,
+        project_type=project_type,
+        project_description=project_description,
+        project_version=project_version,
+    )
 
     try:
         project_dir = filesystem.create_project_dir(spec)
@@ -32,10 +45,8 @@ def init(
 @app.command()
 def validate():
     if template_loader.check_templates():
-        console.print("[green]✓[/green] Custom templates found.")
+        console.print("[green]✓ Custom templates found.[/green]")
     else:
-        console.print("[yellow]![/yellow] No custom templates. Using built-in templates.")
-
-
-if __name__ == "__main__":
-    app()
+        console.print(
+            "[red]! No custom templates[/red]. Using built-in templates."
+        )

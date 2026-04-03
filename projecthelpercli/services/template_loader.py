@@ -13,6 +13,7 @@ def find_template_dir(project_type: str) -> pathlib.Path:
 
 def check_templates() -> bool:
     return USER_TEMPLATES.exists() and any(USER_TEMPLATES.iterdir())
-    
+
+
 def check_templates_local() -> bool:
     return BUILTIN_TEMPLATES.exists() and any(BUILTIN_TEMPLATES.iterdir())
