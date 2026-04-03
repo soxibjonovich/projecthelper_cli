@@ -13,3 +13,7 @@ dependencies = [
 
 [project.scripts]
 helpercli = "projecthelpercli.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
