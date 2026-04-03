@@ -1,0 +1,16 @@
+[project]
+name = "projecthelpercli"
+version = "0.1.0"
+description = "CLI for rapidly startup projects"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "jinja2>=3.1.6",
+    "pydantic>=2.12.5",
+    # "ruff>=0.15.9",
+    "typer>=0.24.1",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+mycli = "projecthelpercli.main:app"
